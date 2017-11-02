@@ -63,6 +63,7 @@ html {
   width: 33.3%;
   padding: 2rem;
   text-align: center;
+  border: 3px solid yellow; /*adding for reference only */
  }
 
 .point .point-title {
@@ -75,3 +76,76 @@ html {
   color: rgb(233,50,117);
   font-size: 5rem;
  }
+
+
+
+/* assign cp 7 styles */
+
+/* default   static position */
+box1 {
+  border: 5px solid green;
+}
+
+/* relative  */
+box2 {
+  position: relative;
+  border: 5px solid red;
+  top: 10px;
+  left: 50px;
+}
+
+/*   */
+box3 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 5px solid blue;
+}
+
+box4 {
+  position: absolute;
+  top: 5px;
+  left: 300px;
+
+  box-sizing: content-box;
+  height: 40px;
+  width: 100px;
+  padding: 20px;  /* content-box gets larger */
+
+  border: 5px solid blue;
+}
+
+box5 {
+  position: absolute;
+  top: 10px;
+  left: 500px;
+
+  box-sizing: border-box;
+  height: 40px;
+  width: 100px;
+  padding: 20px;
+
+  border: 5px solid blue;
+}
+
+/*
+#### __Postions__
+
+__Static__ is the _default position_ for every single page element.
+
+__Relative__ is relative to itself. You can add offset properties or attributes: top, left, bottom, right which will move the object relative to its natural or default position. Where ever it is at in the flow.
+
+__Absolute__ with attributes top, left, buttom, right will offset the object
+from its parent element that has relative or absolute position.
+
+
+#### __Box-sizing__
+__box-sizing: content-box__
+	pushes the padding and border outside the box  therefore makes the actual box size larger
+
+__box-sizing: border-box__
+	pushes the padding and boder inside the box; keeping the box size the same
+
+The content should also be considered for both the content-box and the border-box.
+
+*/
