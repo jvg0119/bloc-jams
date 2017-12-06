@@ -1,8 +1,55 @@
 
 var pointsArray = document.getElementsByClassName('point'); // changed var points to pointsArray
-  var animatePoints = function(points) {
-// var animatePoints = function() {
-//   var points = document.getElementsByClassName('point');
+//console.log(pointsArray)
+
+var revealPoint = function(point) {
+  point.style.opacity = 1;
+  point.style.transform = "scaleX(1) translateY(0)";
+  point.style.msTransform = "scaleX(1) translateY(i)";
+  point.style.WebkitTransform = "scaleX(1) translaieY(0)";
+  // points[i].style.opacity = 1;
+  // points[i].style.transform = "scaleX(1) translateY(0)";
+  // points[i].style.msTransform = "scaleX(1) translateY(i)";
+  // points[i].style.WebkitTransform = "scaleX(1) translaieY(0)";
+}
+
+
+var animatePoints = function(points) {
+  // console.log(points)
+
+  // assignment forEach
+
+  forEach(points, revealPoint);
+
+
+  // using Array.protoytpe.forEach
+  // Array.prototype.forEach.call(points, function(i){
+  //   console.log(i);
+  //   i.style.opacity = 1;
+  //   i.style.transform = "scaleX(1) translateY(0)";
+  //   i.style.msTransform = "scaleX(1) translateY(i)";
+  //   i.style.WebkitTransform = "scaleX(1) translaieY(0)";
+  // })
+
+  // using Array.from()
+  // Array.from(points).forEach(function(i) {
+  //   i.style.opacity = 1;
+  //   i.style.transform = "scaleX(1) translateY(0)";
+  //   i.style.msTransform = "scaleX(1) translateY(i)";
+  //   i.style.WebkitTransform = "scaleX(1) translaieY(0)";
+  // })
+
+  // var pointsArray = Array.from(points);
+  // points.forEach(function() {
+  //   console.log("forEach test")
+  // })
+}
+
+
+/*
+var animatePoints = function(points) {
+  // var animatePoints = function() {
+  // var points = document.getElementsByClassName('point');
 
   var revealPoint = function(i) {
     points[i].style.opacity = 1;
@@ -15,6 +62,9 @@ var pointsArray = document.getElementsByClassName('point'); // changed var point
     revealPoint(i);
   }
 }
+*/
+
+
 // animatePoints();
 // setTimeout(animatePoints, 1000);
 
