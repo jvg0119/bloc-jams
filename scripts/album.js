@@ -36,6 +36,7 @@
  };
 //console.log('albumMarconi.title = ',  albumMarconi.songs[0].title)
 
+
 // this is a template to create each of the song rows
 var createSongRow = function(songNumber, songName, songLength) {
   var template =
@@ -49,16 +50,21 @@ var createSongRow = function(songNumber, songName, songLength) {
  };
 //console.log(createSongRow());
 
+
+
+
 var setCurrentAlbum = function(album) {
   // console.log('setCurrentAlbum is now running!')
 
   // these variables come from album.html file
+
   var albumTitle = document.getElementsByClassName('album-view-title')[0];
   var albumArtist = document.getElementsByClassName('album-view-artist')[0];
   var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
   var albumImage = document.getElementsByClassName('album-cover-art')[0];
   //var albumImage = document.querySelector('.column.half img'); // works OK
   var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
+
 
   // checking the contents on the console
   // console.log('albumTitle = ',  albumTitle);  // var albumTitle above
@@ -111,17 +117,14 @@ var setCurrentAlbum = function(album) {
     //albumSongList.innerHTML = "booooo"
     albumSongList.innerHTML += createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
     //console.log(albumSongList.innerHTML)
-
   }
-
 }
 
 
 window.onload = function() {
-//  setCurrentAlbum(albumPicasso);
-  setCurrentAlbum(albumMarconi); // you can use the other data above
+  setCurrentAlbum(albumPicasso);
+  // setCurrentAlbum(albumMarconi); // you can use the other data above
 
-  //console.log("window.onload is now running")
  };
 
 
