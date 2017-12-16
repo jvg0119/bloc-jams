@@ -1,7 +1,6 @@
 
 // console.log('album.js file test');
 
-
 // Example Album
  var albumPicasso = {
      title: 'The Colors',
@@ -17,7 +16,6 @@
          { title: 'Magenta', duration: '2:15'}
      ]
  };
-
 
  // Another Example Album
  var albumMarconi = {
@@ -35,7 +33,6 @@
      ]
  };
 //console.log('albumMarconi.title = ',  albumMarconi.songs[0].title)
-
 
 // this is a template to create each of the song rows
 var createSongRow = function(songNumber, songName, songLength) {
@@ -65,15 +62,6 @@ var setCurrentAlbum = function(album) {
   var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
 
 
-  // checking the contents on the console
-  // console.log('albumTitle = ',  albumTitle);  // var albumTitle above
-  // console.log('albumArtist = ',  albumArtist);
-  // console.log('albumReleaseInfo = ',  albumReleaseInfo);
-  // console.log('albumImage= ',  albumImage);
-  // albumSongList.textContent = "booooo"
-  // console.log('albumSongList= ',  albumSongList);
-
-
   // these are for the album title:
   albumTitle.firstChild.nodeValue = album.title;  // assigning albumTitle.firstChild.nodeValue to    album.title
                                                   // album is being passed as an paramter to function setCurrentAlbum
@@ -81,16 +69,11 @@ var setCurrentAlbum = function(album) {
                                                                                          // var albumTitle above is set assigned to document.getE  ...
   // console.log('album.title = ', album.title) // this is from the data above; album is being passed to this function
 
-  // I'm just checking what each is on these 3 console.log below
-  // console.log('boooo albumTitle = ', albumTitle)
-  // console.log('boooo albumTitle.firstChild = ', albumTitle.firstChild)
-  // console.log('boooo albumTitle.firstChild.nodeValue = ', albumTitle.firstChild.nodeValue)
 
   // these are putting (or replacing) the new values or content since album is the paramter being passed here
   albumArtist.firstChild.nodeValue = album.artist;
   albumReleaseInfo.firstChild.nodeValue = album.year + ' ' + album.label;
   albumImage.setAttribute('src', album.albumArtUrl);
-
 
 
   // this is for the songlist:
@@ -100,18 +83,7 @@ var setCurrentAlbum = function(album) {
   // album.songs    songs is a property of album; see above data for var albumPicasso = { ...
   // here we're cycling through the album.songs using for loop
   for (var i = 0; i < album.songs.length; i++) { // album is the object being passed to the function
-    // console.log('this is i = ',  i);
-    // console.log('this is album.songs' + i + ' = ' + album.songs[i].title);
 
-    //console.log(albumTitle.firstChild.nodeValue);
-    // console.log(i+1)
-    // console.log(album.songs[i].title)
-    // console.log(album.songs[i].duration)
-
-    //console.log(createSongRow(i, album.title, album.duration));
-    //console.log(albumSongList[i] = "testing!!!!!!!");
-
-    //albumSongList.innerHTML = "booooo"
     albumSongList.innerHTML += createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
     //console.log(albumSongList.innerHTML)
   }
@@ -134,15 +106,6 @@ window.onload = function() {
 
   songListContainer.addEventListener('mouseover', function(e) {
 
-    //console.log(e.target); // the node target; these are the single components
-    // console.log(e.target.parentNode); // parentNode is 'album-view-song-item'; this is the whole line
-    // console.log(e.target.parentNode.className = "album-view-song-item"); // this will change the class to whatever you assign it to
-
-    // if (e.target.textContent === '1') { // this is a quick manual test
-    //  console.log('this is number one')
-
-    //  e.target.innerHTML = playButtonTemplate // this will assign or change the target you mouseover to the playButtonTemplate
-
 //  if (e.target.className === "song-item-number") {  // this is triggered by the number only
     if (e.target.parentElement.className === "album-view-song-item") {  // this is triggered by the line
        e.target.parentElement.querySelector('.song-item-number').innerHTML = playButtonTemplate;
@@ -155,41 +118,5 @@ window.onload = function() {
       this.children[0].innerHTML = this.children[0].getAttribute('data-song-number');
     })
   }
-
-
-/*
-// below is OK but not prefered; it's better to just use   "this" instead of songRows[i]
-// another solution is to use let i instead of var i   to scope i to the block
-// otherwise i will be pointing to the last value of i w/c is songRows.length or 5
-  for (var i = 0; i < songRows.length; i++) {
-     (function row(i) {
-       songRows[i].addEventListener('mouseleave', function(event) {
-          //this.children[0].innerHTML = this.children[0].getAttribute('data-song-number');
-          songRows[i].children[0].innerHTML = songRows[i].children[0].getAttribute('data-song-number');
-          console.log('this = ', this);
-          console.log('this = ', songRows[i]);
-          console.log(i);
-        });
-     })(i);
-   }
-*/
-
-
-/*
-// this works fine
-// alternate method
-  Array.from(songRows).forEach(function(row) {
-    //console.log(row);
-    row.addEventListener('mouseleave', function(e) {
-      // console.log(e.target);
-      // console.log('this = ', this);
-      // console.log('row = ',  row);
-      // console.log(this === row); // true
-      // this.children[0].innerHTML = this.children[0].getAttribute('data-song-number'); // OK
-      row.children[0].innerHTML = row.children[0].getAttribute('data-song-number');
-
-    })
-  })
-*/
 
 }
