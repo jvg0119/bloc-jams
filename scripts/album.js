@@ -89,6 +89,125 @@ var setCurrentAlbum = function(album) {
   }
 }
 
+/////////////////////////////
+// checkpoint 27 DOM Scripting: Play/Pause Part 2
+/*
+These are the 4 relationship the clicked element have to    .song-item-number
+it can have
+1. A child, like the icon or the icon's circular container // either the playButtonTemplate or the pauseButtonTemplate
+2. A parent, like the table row  // .album-view-song-item
+3. A child of the parent, but neither a child nor parent of .song-item-number, like the table cells with the classes .song-item-title or .song-item-duration
+4. The .song-item-number element itself  // .song-item-number; the number
+*/
+
+// var findParentByClassName = function(element, targetElement) {
+//   var currentParentElement = element.parentElement;
+// //  console.log('currentParentElement = ',  currentParentElement)
+//   if (currentParentElement) {
+//     while ( (currentParentElement.className != targetElement) || (currentParentElement.ClassName != null) ) {
+//       currentParentElement  = currentParentElement.parentElement;
+//     }
+//     return currentParentElement  // returns the parentElement that matches the targetElement (parentElementClassName)
+//   }
+// }
+
+var findParentByClassName = function(element, targetElement) {
+  var currentParentElement = element.parentElement;
+    if ((currentParentElement.className != targetElement) || (currentParentElement.ClassName != null) ) {
+      currentParentElement  = currentParentElement.parentElement;
+    }
+  return currentParentElement;
+}
+
+var getSongItem = function(element) {
+  // do this
+  // console.log(element.target.className);
+  var result;
+
+  switch(element.className) {     // element is e.target
+
+// #2 A parent, like the table row (parent of 'song-item-number'
+// need to return the child
+    case 'album-view-song-item':
+      // result = findParentByClassName(element, 'album-view-song-item').querySelector('.song-item-number'); // no need to find parent because this is already the parent
+      // console.log('this is the parent album-view-song-item = @@@',  result); // could not click this ??
+      result = element.querySelector('.song-item-number');
+      return result;
+      break;
+
+// #1 A child, like the icon or the icon's circular container
+    case 'album-song-button':  // if element.className === 'album-song-button'
+    case 'ion-play':           // if element.className === 'ion-play'
+    case 'ion-pause':          // if element.className === 'ion-pause'
+      result = findParentByClassName(element, 'song-item-number');
+      console.log('parentElement of the buttons = ',  result);
+      return result;  // returns  'song-item-number' the parentElement of the 3 cases above
+      break;
+
+// # 3 A child of the parent, but neither a child nor parent of .song-item-number,
+// like the table cells with the classes .song-item-title or .song-item-duration
+      case 'song-item-title':
+      case 'song-item-duration':
+        result = findParentByClassName(element, 'album-view-song-item'); // album-view-song-item is the parent of the 2 cases above
+        console.log('result title or duration = ', result);
+        console.log(result.querySelector('.song-item-number'));
+         return result.querySelector('.song-item-number')
+        // return result
+
+// # 4 The .song-item-number element itself
+      case 'song-item-number':
+        console.log('this is song-item-number ******');
+        console.log(element);
+        return element; // returns itself the   'song-item-number'
+  }
+ }
+
+// targetElement is the e.target being passed from the the addEventListener function
+var clickHandler = function (targetElement) {
+  // console.log("you clicked!")
+
+  var songItem = getSongItem(targetElement);
+    // console.log('this is songItem = ',  songItem) //
+    if (currentlyPlayingSong === null) {
+      // nothing is playing yet; it's null
+      // console.log('Is currentlyPlayingSong null? = ', currentlyPlayingSong);
+      currentlyPlayingSong = songItem.getAttribute('data-song-number'); // setting currentlyPlayingSong to the 'data-song-number' w/c ever song you clicked
+      songItem.innerHTML = pauseButtonTemplate; // you played this song
+      // console.log('you played this song = ', currentlyPlayingSong);
+      // console.log('songItem.innerHTML = ',  songItem.innerHTML)
+
+    } else if (currentlyPlayingSong === songItem.getAttribute('data-song-number')) { // !== null ) {
+      // currentlyPlayingSong is no longer null
+      // if currentlyPlayingSong will be assigned the song or data-song-number that you clicked
+      // songItem.getAttribute('data-song-number')     is what you click; look at songItem method above
+      // console.log('you turned off this song = ', songItem.getAttribute('data-song-number')); // this is the song playing that you turned off
+      songItem.innerHTML = playButtonTemplate; // you turned off the song
+      // console.log('songItem.innerHTML = ', songItem.innerHTML)
+      currentlyPlayingSong = null; // remove the currentlyPlayingSong or turning off this son
+
+    } else if (currentlyPlayingSong !== songItem.getAttribute('data-song-number')) {
+      // currentlyPlayingSong    is neither of the above (null or the song you clicked)
+      // console.clear();
+      // console.log('currentlyPlayingSong.innerHTML = ', currentlyPlayingSong.innerHTML); // undefined; not seen by user
+      // console.log('currentlyPlayingSong = ', currentlyPlayingSong); // 1 is stored here
+
+      var currentlyPlayingSongElement = document.querySelector('[data-song-number="' + currentlyPlayingSong + '"]'); // place the 1 here
+      console.log('currentlyPlayingSongElement = ',  currentlyPlayingSongElement.innerHTML);
+      // this is what the user sees w/c is     1
+
+      currentlyPlayingSongElement.innerHTML = currentlyPlayingSongElement.getAttribute('data-song-number');
+      // console.log('currentlyPlayingSongElement = ',  currentlyPlayingSongElement.innerHTML);
+
+      // these 2 below are the same as the first statement above
+      songItem.innerHTML = pauseButtonTemplate;
+      currentlyPlayingSong = songItem.getAttribute('data-song-number');
+    }
+
+}
+
+
+var pauseButtonTemplate = '<a class="album-song-button"><span class="ion-pause"></span></a>';
+var currentlyPlayingSong = null; // start w/ no songs playing until play is clicked
 
 var songListContainer = document.getElementsByClassName('album-view-song-list')[0];
 //console.log(songListContainer);
@@ -105,18 +224,47 @@ window.onload = function() {
   // setCurrentAlbum(albumMarconi); // you can use the other data above
 
   songListContainer.addEventListener('mouseover', function(e) {
-
-//  if (e.target.className === "song-item-number") {  // this is triggered by the number only
+    // if (e.target.className === "song-item-number") {  // this is triggered by the number only
+    // console.clear();
     if (e.target.parentElement.className === "album-view-song-item") {  // this is triggered by the line
-       e.target.parentElement.querySelector('.song-item-number').innerHTML = playButtonTemplate;
-       //console.log('booo = ',  e.target.parentElement.querySelector('.song-item-number').innerHTML)
+      // e.target.parentElement.querySelector('.song-item-number').innerHTML = playButtonTemplate;
+
+      var songItem = getSongItem(e.target);
+      if (songItem.getAttribute('data-song-number') !== currentlyPlayingSong) {
+        songItem.innerHTML = playButtonTemplate;
+      }
     }
+
   });
 
   for (var i = 0; i < songRows.length; i ++) {
-    songRows[i].addEventListener('mouseleave', function() {
-      this.children[0].innerHTML = this.children[0].getAttribute('data-song-number');
-    })
+    songRows[i].addEventListener('mouseleave', function(e) {  // removing these 3 lines will keep the button on for testing only
+    // this.children[0].innerHTML = this.children[0].getAttribute('data-song-number'); // original statement
+    //console.log(this.children[0].innerHTML)
+
+    // replace the line above
+    var songItem = getSongItem(event.target);
+    var songItemNumber = songItem.getAttribute('data-song-number');
+
+    if (songItemNumber !== currentlyPlayingSong) {
+      songItem.innerHTML = songItemNumber;
+    }
+
+  })
+
+    // when you click a songRow it will invoke the clickHandler callback function
+    // it will pass the event to the clickHandler function
+    songRows[i].addEventListener('click', function(event) {
+      clickHandler(event.target)
+    });
   }
 
 }
+
+
+
+
+
+
+
+//
