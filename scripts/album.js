@@ -92,16 +92,28 @@ var setCurrentAlbum = function(album) {
 /////////////////////////////
 // checkpoint 27 DOM Scripting: Play/Pause Part 2
 
+// assignment 27 DOM Scripting: Play/Pause Part 2
 
 //
 var findParentByClassName = function(element, targetClass) {
-    if (element) {  // checking to make sure there is an element
+    // if (element) {  // checking to make sure there is an element
+    // if (element && (element.parentElement === null) ) {  // OK also
+    if (element && !element.parentElement) { // checking if there is an element and element.elementParent
+      //console.log('element = ', element);
+      //console.log('element.parentElement = ', element.parentElement);
+      console.log('no parent element');
+    } else {
         var currentParent = element.parentElement;  // assigning the parentElement to a variable
         // console.log(' ***** currentParent = ', currentParent); // checking only
         while (currentParent.className !== targetClass && currentParent.className !== null) {
             currentParent = currentParent.parentElement;  // if the 2 conditions above are false do this
         }
-        return currentParent;  // this is the return or output
+        if (currentParent.className != targetClass) {
+          console.log('No parent found with that class name')
+        } else {
+          console.log('This is currentParent = ', currentParent) //
+          return currentParent;  // this is the return or output
+        }
     }
 };
 
@@ -239,8 +251,6 @@ window.onload = function() {
   }
 
 }
-
-
 
 
 //
