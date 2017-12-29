@@ -91,76 +91,58 @@ var setCurrentAlbum = function(album) {
 
 /////////////////////////////
 // checkpoint 27 DOM Scripting: Play/Pause Part 2
-/*
-These are the 4 relationship the clicked element have to    .song-item-number
-it can have
-1. A child, like the icon or the icon's circular container // either the playButtonTemplate or the pauseButtonTemplate
-2. A parent, like the table row  // .album-view-song-item
-3. A child of the parent, but neither a child nor parent of .song-item-number, like the table cells with the classes .song-item-title or .song-item-duration
-4. The .song-item-number element itself  // .song-item-number; the number
-*/
 
-// var findParentByClassName = function(element, targetElement) {
-//   var currentParentElement = element.parentElement;
-// //  console.log('currentParentElement = ',  currentParentElement)
-//   if (currentParentElement) {
-//     while ( (currentParentElement.className != targetElement) || (currentParentElement.ClassName != null) ) {
-//       currentParentElement  = currentParentElement.parentElement;
-//     }
-//     return currentParentElement  // returns the parentElement that matches the targetElement (parentElementClassName)
-//   }
-// }
 
-var findParentByClassName = function(element, targetElement) {
-  var currentParentElement = element.parentElement;
-    if ((currentParentElement.className != targetElement) || (currentParentElement.ClassName != null) ) {
-      currentParentElement  = currentParentElement.parentElement;
+//
+var findParentByClassName = function(element, targetClass) {
+    if (element) {  // checking to make sure there is an element
+        var currentParent = element.parentElement;  // assigning the parentElement to a variable
+        // console.log(' ***** currentParent = ', currentParent); // checking only
+        while (currentParent.className !== targetClass && currentParent.className !== null) {
+            currentParent = currentParent.parentElement;  // if the 2 conditions above are false do this
+        }
+        return currentParent;  // this is the return or output
     }
-  return currentParentElement;
-}
+};
 
-var getSongItem = function(element) {
-  // do this
-  // console.log(element.target.className);
-  var result;
+//
+ var getSongItem = function(element) {
+   var result;
 
-  switch(element.className) {     // element is e.target
+     switch (element.className) {
 
-// #2 A parent, like the table row (parent of 'song-item-number'
-// need to return the child
-    case 'album-view-song-item':
-      // result = findParentByClassName(element, 'album-view-song-item').querySelector('.song-item-number'); // no need to find parent because this is already the parent
-      // console.log('this is the parent album-view-song-item = @@@',  result); // could not click this ??
-      result = element.querySelector('.song-item-number');
-      return result;
-      break;
+        // #1 A child, like the icon or the icon's circular container
+         case 'album-song-button':  // if element.className === 'album-song-button'
+         case 'ion-play':           // if element.className === 'album-song-button'
+         case 'ion-pause':          // if element.className === 'ion-pause'
+            result = findParentByClassName(element, 'song-item-number');
+            // console.log('result = ',  result);
+            // result = document.querySelector('.song-item-number'); // this is always going to be the first song or # 1 song; so won't work
+          return result;
+             // returns  'song-item-number' the parentElement of the 3 cases above
 
-// #1 A child, like the icon or the icon's circular container
-    case 'album-song-button':  // if element.className === 'album-song-button'
-    case 'ion-play':           // if element.className === 'ion-play'
-    case 'ion-pause':          // if element.className === 'ion-pause'
-      result = findParentByClassName(element, 'song-item-number');
-      console.log('parentElement of the buttons = ',  result);
-      return result;  // returns  'song-item-number' the parentElement of the 3 cases above
-      break;
+         // #2 A parent, like the table row (parent of 'song-item-number'
+         // need to return the child
+         case 'album-view-song-item':
+             result = element.querySelector('.song-item-number'); // no need to find parent because this is already the parent
+             return result;
 
-// # 3 A child of the parent, but neither a child nor parent of .song-item-number,
-// like the table cells with the classes .song-item-title or .song-item-duration
-      case 'song-item-title':
-      case 'song-item-duration':
-        result = findParentByClassName(element, 'album-view-song-item'); // album-view-song-item is the parent of the 2 cases above
-        console.log('result title or duration = ', result);
-        console.log(result.querySelector('.song-item-number'));
-         return result.querySelector('.song-item-number')
-        // return result
+         // # 3 A child of the parent, but neither a child nor parent of .song-item-number,
+         // like the table cells with the classes .song-item-title or .song-item-duration
+         // album-view-song-item is the parent of the 2 cases below; '.song-item-number' is their child
+         case 'song-item-title':
+         case 'song-item-duration':
+             result = findParentByClassName(element, 'album-view-song-item').querySelector('.song-item-number');
+             return result;
 
-// # 4 The .song-item-number element itself
-      case 'song-item-number':
-        console.log('this is song-item-number ******');
-        console.log(element);
-        return element; // returns itself the   'song-item-number'
-  }
- }
+        // # 4 The .song-item-number element itself
+         case 'song-item-number':
+             return element;
+         default:
+             return;
+     }
+ };
+
 
 // targetElement is the e.target being passed from the the addEventListener function
 var clickHandler = function (targetElement) {
@@ -238,19 +220,16 @@ window.onload = function() {
   });
 
   for (var i = 0; i < songRows.length; i ++) {
-    songRows[i].addEventListener('mouseleave', function(e) {  // removing these 3 lines will keep the button on for testing only
+    songRows[i].addEventListener('mouseleave', function(event) {  // removing these 3 lines will keep the button on for testing only
     // this.children[0].innerHTML = this.children[0].getAttribute('data-song-number'); // original statement
-    //console.log(this.children[0].innerHTML)
+    // console.log(this.children[0].innerHTML)
 
-    // replace the line above
-    var songItem = getSongItem(event.target);
-    var songItemNumber = songItem.getAttribute('data-song-number');
-
-    if (songItemNumber !== currentlyPlayingSong) {
-      songItem.innerHTML = songItemNumber;
-    }
-
-  })
+      var songItem = getSongItem(event.target);
+      var songItemNumber = songItem.getAttribute('data-song-number');
+      if (songItemNumber !== currentlyPlayingSong) {
+        songItem.innerHTML = songItemNumber;
+      }
+    });
 
     // when you click a songRow it will invoke the clickHandler callback function
     // it will pass the event to the clickHandler function
@@ -260,9 +239,6 @@ window.onload = function() {
   }
 
 }
-
-
-
 
 
 
