@@ -240,7 +240,4 @@ window.onload = function() {
 
 }
 
-
-
-
 //
