@@ -45,49 +45,68 @@ var createSongRow = function(songNumber, songName, songLength) {
       + '  <td class="song-item-duration">' + songLength + '</td>'
       + '</tr>'
       ;
-     return template;
+      //return template;
+      // refactor to return a jQuery template object
+     return $(template);
  };
 //console.log(createSongRow());
 
-
+// refactoring to jQuery
 var setCurrentAlbum = function(album) {
   // console.log('setCurrentAlbum is now running!')
 
   // these variables come from album.html file
-  var albumTitle = document.getElementsByClassName('album-view-title')[0];
-  var albumArtist = document.getElementsByClassName('album-view-artist')[0];
-  var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
-  var albumImage = document.getElementsByClassName('album-cover-art')[0];
-  //var albumImage = document.querySelector('.column.half img'); // works OK
-  var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
+  // var albumTitle = document.getElementsByClassName('album-view-title')[0];
+  // var albumArtist = document.getElementsByClassName('album-view-artist')[0];
+  // var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
+  // var albumImage = document.getElementsByClassName('album-cover-art')[0];
+  // var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
+  // refactor to jQuery
+  var $albumTitle = $('.album-view-title');
+  var $albumArtist = $('.album-view-artist');
+  var $albumReleaseInfo = $('.album-view-release-info');
+  var $albumImage = $('.album-cover-art');
+  var $albumSongList = $('.album-view-song-list');
 
+  // console.log('albumTitle = ', albumTitle ===  $albumTitle); // false ?
 
   // these are for the album title:
-  albumTitle.firstChild.nodeValue = album.title;  // assigning albumTitle.firstChild.nodeValue to    album.title
+  //albumTitle.firstChild.nodeValue = album.title;  // assigning albumTitle.firstChild.nodeValue to    album.title
                                                   // album is being passed as an paramter to function setCurrentAlbum
   // console.log('albumTitle.firstChild.nodeValue = ',  albumTitle.firstChild.nodeValue) // this is from the album.html file
                                                                                          // var albumTitle above is set assigned to document.getE  ...
   // console.log('album.title = ', album.title) // this is from the data above; album is being passed to this function
 
-
   // these are putting (or replacing) the new values or content since album is the paramter being passed here
-  albumArtist.firstChild.nodeValue = album.artist;
-  albumReleaseInfo.firstChild.nodeValue = album.year + ' ' + album.label;
-  albumImage.setAttribute('src', album.albumArtUrl);
+  // albumArtist.firstChild.nodeValue = album.artist;
+  // albumReleaseInfo.firstChild.nodeValue = album.year + ' ' + album.label;
+  // albumImage.setAttribute('src', album.albumArtUrl);
+
+  // refactor the above to jQuery below:
+  $albumTitle.text(album.title);
+  $albumArtist.text(album.artist);
+  $albumReleaseInfo.text(album.year+ ' ' + album.label);
+  $albumImage.attr('src', album.albumArtUrl);
 
 
   // this is for the songlist:
-  albumSongList.innerHTML = ''; // start w/ an empty list
+  //albumSongList.innerHTML = ''; // start w/ an empty list
+  $albumSongList.empty();
 
   // album is being passed to function setCurrentAlbum
   // album.songs    songs is a property of album; see above data for var albumPicasso = { ...
   // here we're cycling through the album.songs using for loop
   for (var i = 0; i < album.songs.length; i++) { // album is the object being passed to the function
 
-    albumSongList.innerHTML += createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
+    //albumSongList.innerHTML += createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
     //console.log(albumSongList.innerHTML)
+    //$albumSongList.append(createSongRow(i + 1, album.songs[i].title, album.songs[i].duration)) // OK
+    var $newRow = createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
+    $albumSongList.append($newRow);
   }
 }
+
+
 
 /////////////////////////////
 // checkpoint 27 DOM Scripting: Play/Pause Part 2
@@ -239,5 +258,68 @@ window.onload = function() {
   }
 
 }
+
+////////////////////////////////////////////////////////////
+// just a quick practice                                  //
+// How jQuery Works                                       //
+// link jQuery: The Basics                                //
+// https://learn.jquery.com/about-jquery/how-jquery-works //
+////////////////////////////////////////////////////////////
+
+/*
+
+$(window).load(function() {
+//$(document).ready(function() {
+  console.log('test!!!!!!!!!!!!!');
+
+  $("a.jquery-link").click(function() {
+    console.log("this will no longer go to ****!");
+    event.preventDefault();
+    $("a.jquery-link").css({'fontWeight': 'bold', 'color':'yellow', 'fontFamily': 'cursive'})
+    // $('a.jquery-link').addClass('new-class');
+    $(this).addClass('new-class');
+    //console.log(this)
+
+    // $(document).on('click', '.new-class', function() {
+    //   console.log("Now you're clicking!");
+    //   //console.log('this = ', this);
+    // })
+
+    $(document).bind('click', "new-class", function() {
+      console.log("blicking with bind!")
+      //console.log('this = ', this)
+    })
+
+  //   $('.link').click(() => {
+  // this.addClass('hello');
+
+  // $('.new-class').click(() => {
+  //   console.log('clicking on hello');
+  // });
+  //
+  // $('.new-class').click(function() {
+  //   console.log('booo');
+  // })
+
+  })
+
+  var myCallback = function() {
+    console.log("myCallback function!!!");
+  }
+  $.get('album.html', myCallback);
+
+
+//////////////////////////////////////
+  $('.goodbye').click(()=> $('.goodbye').empty());
+  $('.hello').click(()=> $('.goodbye').append('goodbye'));
+  $('.texting').click(()=> $('.texting').text( () => { return "returning from text" }) );
+  $('.texting').text( "booooo!!!" );
+  $('.texting').click(() => $('.texting').text( () => { return 'boooo!' }) );
+//  $('.hello').empty();
+
+});
+
+*/
+
 
 //
