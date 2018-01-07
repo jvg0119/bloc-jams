@@ -107,12 +107,9 @@ var setCurrentAlbum = function(album) {
 }
 
 
-
 /////////////////////////////
 // checkpoint 27 DOM Scripting: Play/Pause Part 2
 
-
-//
 var findParentByClassName = function(element, targetClass) {
     if (element) {  // checking to make sure there is an element
         var currentParent = element.parentElement;  // assigning the parentElement to a variable
@@ -258,68 +255,6 @@ window.onload = function() {
   }
 
 }
-
-////////////////////////////////////////////////////////////
-// just a quick practice                                  //
-// How jQuery Works                                       //
-// link jQuery: The Basics                                //
-// https://learn.jquery.com/about-jquery/how-jquery-works //
-////////////////////////////////////////////////////////////
-
-/*
-
-$(window).load(function() {
-//$(document).ready(function() {
-  console.log('test!!!!!!!!!!!!!');
-
-  $("a.jquery-link").click(function() {
-    console.log("this will no longer go to ****!");
-    event.preventDefault();
-    $("a.jquery-link").css({'fontWeight': 'bold', 'color':'yellow', 'fontFamily': 'cursive'})
-    // $('a.jquery-link').addClass('new-class');
-    $(this).addClass('new-class');
-    //console.log(this)
-
-    // $(document).on('click', '.new-class', function() {
-    //   console.log("Now you're clicking!");
-    //   //console.log('this = ', this);
-    // })
-
-    $(document).bind('click', "new-class", function() {
-      console.log("blicking with bind!")
-      //console.log('this = ', this)
-    })
-
-  //   $('.link').click(() => {
-  // this.addClass('hello');
-
-  // $('.new-class').click(() => {
-  //   console.log('clicking on hello');
-  // });
-  //
-  // $('.new-class').click(function() {
-  //   console.log('booo');
-  // })
-
-  })
-
-  var myCallback = function() {
-    console.log("myCallback function!!!");
-  }
-  $.get('album.html', myCallback);
-
-
-//////////////////////////////////////
-  $('.goodbye').click(()=> $('.goodbye').empty());
-  $('.hello').click(()=> $('.goodbye').append('goodbye'));
-  $('.texting').click(()=> $('.texting').text( () => { return "returning from text" }) );
-  $('.texting').text( "booooo!!!" );
-  $('.texting').click(() => $('.texting').text( () => { return 'boooo!' }) );
-//  $('.hello').empty();
-
-});
-
-*/
 
 
 //
