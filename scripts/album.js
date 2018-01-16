@@ -167,81 +167,58 @@ var trackIndex = function(album, song) {
 }
 
 
+var nextPreviousSong = function() {
+  var currentSongIndex = trackIndex(currentAlbum, currentSongFromAlbum);
+
+  console.log('wallah .... !!!')
+
+
+
+  // if
+  // currentSongIndex++;
+  //
+  // currentSongIndex--;
+
+}
+
+
+
+
+
+
+/*
 var nextSong = function() {
-    // console.log('currentlyPlayingSongNumber before next was clicked = ', currentlyPlayingSongNumber)
     var currentSongIndex = trackIndex(currentAlbum, currentSongFromAlbum); // albumPicasso, null = -1
-    // console.log('currentSongFromAlbum = ', currentSongFromAlbum) // previous song after next was clicked (global var)
-    // console.log('before currentSongIndex++ >>>>', currentSongIndex)
-    // Note that we're _incrementing_ the song here since this is the    next function
+
     currentSongIndex++; // increment -1 = 0 // this is the actual array index number
-    // console.log('currentSongIndex = ', typeof(currentSongIndex)); // number
-    // console.log('currentSongIndex** = ', currentSongIndex); // this becomes the lastSong
 
     if (currentSongIndex >= currentAlbum.songs.length) { // occurs only if currentSongIndex is the last song in the album
         currentSongIndex = 0;
-        // console.log('start album over again from song index 1');
     }
 
-    // Save the last song number before changing it
     var lastSongNumber = currentlyPlayingSongNumber; // this is the previous song
-    // console.log('lastSongNumber = ', lastSongNumber)
 
-    //////////////////////////////////////
-    //    replaceed with setSong() function
-    //    Set a new current song by incrementing it
-    // currentlyPlayingSongNumber = currentSongIndex + 1; // incrementing the currentlyPlayingSongNumber w/c is
-    // currentSongFromAlbum = currentAlbum.songs[currentSongIndex]; // this is the actual song from the songs array property
-    // console.log('currentSongFromAlbum after w/c is current *= ', currentSongFromAlbum); // after
     setSong(currentSongIndex+1);
 
-    // Update the Player Bar information
     updatePlayerBarSong(); // updates the playerBar info ... w/ song name & atrist name
 
-    // new variables for  updating the  data-song-number
     var $nextSongNumberCell = $('.song-item-number[data-song-number="' + currentlyPlayingSongNumber + '"]');
     var $lastSongNumberCell = $('.song-item-number[data-song-number="' + lastSongNumber + '"]');
-    // console.log('$nextSongNumberCell before = &&&& ', $nextSongNumberCell); // previous song
-    // console.log('$lastSongNumberCelll before = %%%% ', $lastSongNumberCell); // last song
 
     $nextSongNumberCell.html(pauseButtonTemplate);
     $lastSongNumberCell.html(lastSongNumber);
 
-    // console.log('$nextSongNumberCell after = ', $nextSongNumberCell); // this is the current song (data-song-number) holds the number
-    // console.log('$lastSongNumberCelll after = ', $lastSongNumberCell); // this is the last song (data-song-number) holds the number
-
 }; // end of nextSong function
 
 var previousSong = function() {
-  // console.log("previousSong function!!!")
   var currentSongIndex = trackIndex(currentAlbum, currentSongFromAlbum); // returns the currentIndex from currentAlbum
-  // console.log('currentSongIndex before decrementing >>> ', currentSongIndex)
   currentSongIndex--;
-  //console.log('currentSongIndex after decrementing >>> ', currentSongIndex)
 
   if (currentSongIndex < 0) { // if currentSongIndex is the first song
-    // console.log('first song!!!') // go to previous it go to last song
     currentSongIndex = currentAlbum.songs.length - 1;// currentSongIndex will be assigned to last song
-    // console.log('currentSongIndex = ', currentSongIndex)
   }
-
-  // console.log(currentAlbum)
-  // console.log('currentSongFromAlbum = ', currentSongFromAlbum)
-  // console.log('currentlyPlayingSongNumber before = ', currentlyPlayingSongNumber)
-
-  //currentlyPlayingSongNumber += 1
-  //console.log('currentlyPlayingSongNumber after = ', currentlyPlayingSongNumber)
-
   var lastSongNumber = currentlyPlayingSongNumber;
-  // console.log('lastSongNumber = ', lastSongNumber)
 
-  //////////////////////////////////////
-  //    replaceed with setSong() function
-  //  currentlyPlayingSongNumber = currentSongIndex + 1;
-  //    currentSongFromAlbum = currentAlbum.songs[currentlyPlayingSongNumber - 1] // OK
-  //  currentSongFromAlbum = currentAlbum.songs[currentSongIndex]; // better than above
-  //    console.log('currentSongFromAlbum = ', currentSongFromAlbum)
-  //    console.log(typeof(lastSongNumber))
-  //    console.log('currentlyPlayingSongNumber = ', currentlyPlayingSongNumber);
   setSong(currentSongIndex+1);
 
   updatePlayerBarSong();
@@ -251,13 +228,14 @@ var previousSong = function() {
   var $previousSongNumberCell = $('.song-item-number[data-song-number="' + currentlyPlayingSongNumber + '"]');
   var $lastSongNumberCell = $('.song-item-number[data-song-number="' + lastSongNumber + '"]');
 
-  // console.log($previousSongNumberCell);
-  // console.log($lastSongNumberCell);
-
   $previousSongNumberCell.html(pauseButtonTemplate);
   $lastSongNumberCell.html(lastSongNumber);
 
-}
+} // end of previousSong function
+
+*/
+
+
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -302,8 +280,13 @@ $(document).ready(function() {
   setCurrentAlbum(albumPicasso); //passed albumPicasso object
 
   // these 2 jq are event listerners (click functions) that triggers after a click event
-  $previousButton.click(previousSong); // clicking $previousButton invokes function previousSong
-  $nextButton.click(nextSong);
+  // $previousButton.click(previousSong); // clicking $previousButton invokes function previousSong
+  // $nextButton.click(nextSong);
+ $previousButton.click(nextPreviousSong);
+ $nextButton.click(nextPreviousSong);
+
+
+
 
   // console.log('currentlyPlayingSongNumber = ',  currentlyPlayingSongNumber)
   // console.log('currentSongFromAlbum = ', currentSongFromAlbum)
@@ -316,6 +299,33 @@ $(document).ready(function() {
 //                                       end of js                                          //
 //////////////////////////////////////////////////////////////////////////////////////////////
 
+/*
 
+var testFunc = function() {
+  console.log('testFunc running!!!')
+
+  console.log($previousButton)
+
+  console.log($nextButton)
+
+  // if ($previousButton.click(testFunc)) {
+  //   console.log('previous ***')
+  // }
+  // if ($nextButton.click(testFunc)) {
+  //   console.log('next $$$')
+  // }
+
+
+}
 
 //
+
+$(document).ready(function() {
+  console.log("testing !!!!!!!!!!!!");
+
+  $previousButton.click(testFunc);
+  $nextButton.click(testFunc);
+
+})
+
+*/
