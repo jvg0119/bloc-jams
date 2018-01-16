@@ -2,9 +2,31 @@
 // Example Album    moved to fixtures.js
 
 ////////////////////////////////////////////////////////
+// assignment cp 32 jQuery: Next and Previous Buttons //
+///////////////////////////////////////////////////////
+
+// assigns currentlyPlayingSongNumber and
+// currentSongFromAlbum
+var setSong = function(songNumber) {
+  currentlyPlayingSongNumber = parseInt(songNumber);
+  currentSongFromAlbum = currentAlbum.songs[songNumber -1]
+}
+
+//currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
+//currentSongFromAlbum = currentAlbum.songs[currentSongIndex];
+
+// returns the song number element that corresponds to that song number
+// where do I get the parameter
+var getSongNumberCell = function(number) {
+  console.log('getSongNumberCell *** ');
+  // $('.song-item-number[data-song-number="' + currentlyPlayingSongNumber + '"]');
+  return $('.song-item-number[data-song-number="' + number + '"]');
+}
+
+////////////////////////////////////////////////////////
 // this is a template to create each of the song rows //
 // also gives the button functionalities              //
-///////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
 var createSongRow = function(songNumber, songName, songLength) {
 
   var template =
@@ -17,10 +39,6 @@ var createSongRow = function(songNumber, songName, songLength) {
 
   var $row = $(template); // creates the row template
 
-////////////////////////////////////
-// originals   copy at the bottom
-///////////////////////////////////
-
   var clickHandler = function() {
     // console.log('this inside clickHandler ----<<<',  this)
     // var songNumber2 = $(this).attr('data-song-number');
@@ -31,14 +49,22 @@ var createSongRow = function(songNumber, songName, songLength) {
     if (currentlyPlayingSongNumber !== null) {
     //  console.log('what is in currentlyPlayingSong =', currentlyPlayingSong)
 	  // Revert to song number for currently playing song because user started playing new song.
-      var currentlyPlayingCell = $('.song-item-number[data-song-number="' + currentlyPlayingSongNumber + '"]');
-        currentlyPlayingCell.html(currentlyPlayingSongNumber);
-      }
+
+    //  var currentlyPlayingCell = $('.song-item-number[data-song-number="' + currentlyPlayingSongNumber + '"]');
+      var currentlyPlayingCell = getSongNumberCell(songNumber).html(currentlyPlayingSongNumber);
+      currentlyPlayingCell.html(currentlyPlayingSongNumber);
+
+    }
     if (currentlyPlayingSongNumber !== songNumber) {
   		// Switch from Play -> Pause button to indicate new song is playing.
       $(this).html(pauseButtonTemplate);
-      currentlyPlayingSongNumber = songNumber;
-      currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
+
+      //////////////////////////////////////
+      // replaceed with setSong() function
+      // currentlyPlayingSongNumber = songNumber;
+      // currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
+      setSong(songNumber);
+
       // console.log('currentAlbum >>>> ', currentAlbum.title) // this is one of the song album in the song list
       // console.log('currentAlbum >>>> ', currentAlbum.artist)
       // console.log('currentAlbum >>>> ', currentAlbum.year+ ' ' + currentAlbum.label)
@@ -52,6 +78,14 @@ var createSongRow = function(songNumber, songName, songLength) {
       currentlyPlayingSongNumber = null;
       currentSongFromAlbum = null;
   	}
+
+    // console.log('after createSongRow ===========')
+    // console.log('currentlyPlayingSongNumber = ',  currentlyPlayingSongNumber)
+    // console.log('currentSongFromAlbum = ', currentSongFromAlbum)
+    //
+    // console.log('setSong = >>>>>>>>>>>>>>>> ', setSong(songNumber));
+
+
   }; // end of clickHandler function
 
   var onHover = function(event) {
@@ -60,6 +94,7 @@ var createSongRow = function(songNumber, songName, songLength) {
     // console.log(this === $row[0]); // true; this    is $row
     // console.log($row[0]);
     // songItem.innerHTML = playButtonTemplate;
+
     var songNumberCell = $(this).find('.song-item-number');
 
     // var songNumber = songNumberCell.attr('data-song-number');
@@ -73,7 +108,6 @@ var createSongRow = function(songNumber, songName, songLength) {
   var offHover = function(event) {
     // console.log('offHover ***');
     var songNumberCell = $(this).find('.song-item-number');
-
     // var songNumber = songNumberCell.attr('data-song-number');
     var songNumber = parseInt(songNumberCell.attr('data-song-number'));
     if (songNumber !== currentlyPlayingSongNumber) {
@@ -152,10 +186,14 @@ var nextSong = function() {
     var lastSongNumber = currentlyPlayingSongNumber; // this is the previous song
     // console.log('lastSongNumber = ', lastSongNumber)
 
-    // Set a new current song by incrementing it
-    currentlyPlayingSongNumber = currentSongIndex + 1; // incrementing the currentlyPlayingSongNumber w/c is
-    currentSongFromAlbum = currentAlbum.songs[currentSongIndex]; // this is the actual song from the songs array property
+    //////////////////////////////////////
+    //    replaceed with setSong() function
+    //    Set a new current song by incrementing it
+    // currentlyPlayingSongNumber = currentSongIndex + 1; // incrementing the currentlyPlayingSongNumber w/c is
+    // currentSongFromAlbum = currentAlbum.songs[currentSongIndex]; // this is the actual song from the songs array property
     // console.log('currentSongFromAlbum after w/c is current *= ', currentSongFromAlbum); // after
+    setSong(currentSongIndex+1);
+
     // Update the Player Bar information
     updatePlayerBarSong(); // updates the playerBar info ... w/ song name & atrist name
 
@@ -172,8 +210,6 @@ var nextSong = function() {
     // console.log('$lastSongNumberCelll after = ', $lastSongNumberCell); // this is the last song (data-song-number) holds the number
 
 }; // end of nextSong function
-
-///////
 
 var previousSong = function() {
   // console.log("previousSong function!!!")
@@ -197,12 +233,16 @@ var previousSong = function() {
 
   var lastSongNumber = currentlyPlayingSongNumber;
   // console.log('lastSongNumber = ', lastSongNumber)
-  currentlyPlayingSongNumber = currentSongIndex + 1;
-  // currentSongFromAlbum = currentAlbum.songs[currentlyPlayingSongNumber - 1] // OK
-  currentSongFromAlbum = currentAlbum.songs[currentSongIndex]; // better than above
-  // console.log('currentSongFromAlbum = ', currentSongFromAlbum)
-  // console.log(typeof(lastSongNumber))
-  // console.log('currentlyPlayingSongNumber = ', currentlyPlayingSongNumber);
+
+  //////////////////////////////////////
+  //    replaceed with setSong() function
+  //  currentlyPlayingSongNumber = currentSongIndex + 1;
+  //    currentSongFromAlbum = currentAlbum.songs[currentlyPlayingSongNumber - 1] // OK
+  //  currentSongFromAlbum = currentAlbum.songs[currentSongIndex]; // better than above
+  //    console.log('currentSongFromAlbum = ', currentSongFromAlbum)
+  //    console.log(typeof(lastSongNumber))
+  //    console.log('currentlyPlayingSongNumber = ', currentlyPlayingSongNumber);
+  setSong(currentSongIndex+1);
 
   updatePlayerBarSong();
 
@@ -265,8 +305,17 @@ $(document).ready(function() {
   $previousButton.click(previousSong); // clicking $previousButton invokes function previousSong
   $nextButton.click(nextSong);
 
+  // console.log('currentlyPlayingSongNumber = ',  currentlyPlayingSongNumber)
+  // console.log('currentSongFromAlbum = ', currentSongFromAlbum)
+
+//  console.log('songNumber = ', songNumber)
+
 });
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 //                                       end of js                                          //
 //////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+//
