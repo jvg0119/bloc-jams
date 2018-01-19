@@ -307,7 +307,6 @@ var updatePlayerBarSong = function() {
   $('.currently-playing .artist-name').text(currentAlbum.artist);
   $('.currently-playing .artist-song-mobile').text(currentSongFromAlbum.title + " - " + currentAlbum.artist); // for mobile
   $('.main-controls .play-pause').html(playerBarPauseButton); // replaces playerBarPlayButton to playerBarPauseButton
-
 }
 
 ///////////////////////////////////
@@ -333,6 +332,42 @@ var $nextButton = $('.main-controls .next'); // next button jq variable
 // console.log('$previousButton >>> ',  $previousButton.text());
 // console.log('$nextButton >>> ',  $nextButton.html());
 
+
+////////////////////////////////////////////////////
+//  assignment jQuery: Buzz Library               //
+////////////////////////////////////////////////////
+var $pausePlay = $('.main-controls .play-pause');
+
+var togglePlayFromPlayerBar = function () {
+  // console.log('togglePlayFromPlayerBar ... ');
+
+  // If a song is paused and the play button is clicked in the player bar
+  // if (currentSoundFile) {  // OK
+
+    if (currentSoundFile && currentSoundFile.isPaused()) {
+    // if (currentSoundFile.isPaused()) {
+      // console.log('song is paused and the play button is clicked!');
+      // console.log('currentlyPlayingSongNumber -===>', currentlyPlayingSongNumber)
+      // songNumberCell.html(pauseButtonTemplate);
+      // console.log($('.main-controls .play-pause').html(playerBarPauseButton));
+
+      // getSongNumberCell(currentlyPlayingSongNumber).html(playButtonTemplate); // OK
+      getSongNumberCell(parseInt(currentlyPlayingSongNumber)).html(playButtonTemplate);
+      $('.main-controls .play-pause').html(playerBarPauseButton);
+      currentSoundFile.play();
+    }
+
+  // If the song is playing (so a current sound file exist), and the pause button is clicked
+  else  { // (currentSoundFile) {
+    // console.log('song is playing pause button is clicked!!!');
+
+    // $('.song-item-number[data-song-number="' + currentlyPlayingSongNumber + '"]').html(pauseButtonTemplate); // OK
+    $('.main-controls .play-pause').html(playerBarPauseButton);
+    currentSoundFile.pause();
+    }
+//  }
+}  // end of togglePlayFromPlayerBar function
+
 ///////////////////////////////////////////////////////
 // ready function runs first after the DOM is loaded //
 ///////////////////////////////////////////////////////
@@ -344,10 +379,7 @@ $(document).ready(function() {
   $previousButton.click(previousSong); // clicking $previousButton invokes function previousSong
   $nextButton.click(nextSong);
 
-  // console.log('currentlyPlayingSongNumber = ',  currentlyPlayingSongNumber)
-  // console.log('currentSongFromAlbum = ', currentSongFromAlbum)
-
-//  console.log('songNumber = ', songNumber)
+  $pausePlay.click(togglePlayFromPlayerBar);
 
 });
 
