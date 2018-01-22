@@ -22,13 +22,11 @@ var setSong = function(songNumber) {
 
 }
 
-
 var seek = function(time) {
   if (currentSoundFile) {
     currentSoundFile.setTime(time);
   }
 }
-
 
 var setVolume = function(volume) {
   //console.log('boooo!');
@@ -97,6 +95,7 @@ var createSongRow = function(songNumber, songName, songLength) {
 
       //console.log('clicked song is not playing now play it!')
       currentSoundFile.play();
+      updateSeekBarWhileSongPlays(); //
       updatePlayerBarSong();
 
 ////
@@ -121,6 +120,7 @@ var createSongRow = function(songNumber, songName, songLength) {
         currentSoundFile.play();
         //console.log('file is paused now play it again')
         // $(this).html(pauseButtonTemplate);
+        updateSeekBarWhileSongPlays(); //
 
       } else {
         $(this).html(playButtonTemplate);
@@ -197,6 +197,20 @@ var setCurrentAlbum = function(album) { // default passing albumPicasso
 
 } // end of setCurrentAlbum function
 
+var setCurrentTimeInPlayerBar = function(currentTime) {
+  // console.log('setCurrentTimeInPlayerBar boom!!!!');
+
+  $('.player-bar .current-time').text(filterTimeCode(currentTime));
+
+}
+
+var setTotalTimeInPlayerBar = function(totalTime) {
+
+  $('.player-bar .total-time').text(filterTimeCode(totalTime));
+
+}
+
+
 
 var updateSeekBarWhileSongPlays = function() {
   if (currentSoundFile) {
@@ -206,7 +220,13 @@ var updateSeekBarWhileSongPlays = function() {
       var seekBarFillRatio = this.getTime() / this.getDuration();
       var $seekBar = $('.seek-control .seek-bar');
       updateSeekPercentage($seekBar, seekBarFillRatio);
+      setCurrentTimeInPlayerBar(this.getTime());
+      //console.log('seekBarFillRatio ))))>>>', seekBarFillRatio)
     });
+
+    // console.log('seekBarFillRatio ))))>>>', this.getTime());
+    // setCurrentTimeInPlayerBar(seekBarFillRatio); // pass argument currentTime
+    // console.log('boooh >>>>',  setCurrentTimeInPlayerBar(seekBarFillRatio));
   }
 };
 
@@ -397,7 +417,14 @@ var previousSong = function() {
   $lastSongNumberCell.html(lastSongNumber);
 
 }
+var filterTimeCode = function(timeInSeconds) {
+  var minutes = Math.floor(parseInt(timeInSeconds) / 60);
+  var seconds = (parseInt(timeInSeconds % 60));
+  var formatedSeonds = seconds < 10 ? '0' + seconds : seconds;
 
+  return minutes + ':' + formatedSeonds
+
+ };
 
 //////////////////////////////////////////////////////////////////////////
 // updatePlayerBarSong(currentSongFromAlbum, currentlyPlayingSongNumber)
@@ -410,6 +437,9 @@ var updatePlayerBarSong = function() {
   $('.currently-playing .artist-name').text(currentAlbum.artist);
   $('.currently-playing .artist-song-mobile').text(currentSongFromAlbum.title + " - " + currentAlbum.artist); // for mobile
   $('.main-controls .play-pause').html(playerBarPauseButton); // replaces playerBarPlayButton to playerBarPauseButton
+
+  setTotalTimeInPlayerBar(currentSongFromAlbum.duration);// pass argument (totalTime);
+
 }
 
 ///////////////////////////////////
@@ -493,6 +523,3 @@ $(document).ready(function() {
 //////////////////////////////////////////////////////////////////////////////////////////////
 //                                       end of js                                          //
 //////////////////////////////////////////////////////////////////////////////////////////////
-
-
-//
